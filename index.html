@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b18">
+<title>Creator AI Studio - Free Online Tools</title>
+<meta name="description" content="Creator AI Studio - Free online tools for creators, students and everyone.">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#080b18;color:#fff;font-family:Arial,sans-serif}
+header{padding:20px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #252b45;background:#0c1123}
+.logo{font-size:23px;font-weight:bold;color:#9b8cff}
+.logo span{color:#38bdf8}
+nav a{color:#ddd;text-decoration:none;margin-left:18px;font-size:14px}
+.hero{text-align:center;padding:75px 20px 55px;background:radial-gradient(ellipse at top,#22205a,#080b18 70%)}
+.tag{color:#60a5fa;font-size:13px;letter-spacing:2px}
+.hero h1{font-size:42px;margin:18px 0}
+.hero h1 span{color:#9b8cff}
+.hero p{color:#b5bad0;line-height:1.7}
+.search{max-width:540px;margin:28px auto;display:flex;background:#151c34;border:1px solid #39446a;border-radius:12px;padding:6px}
+.search input{flex:1;background:none;border:0;outline:0;color:white;padding:12px;font-size:15px;min-width:0}
+.search button,.btn{background:#6854ed;color:white;border:0;padding:12px 20px;border-radius:8px;cursor:pointer}
+.section{padding:35px 6%}
+.section h2{font-size:25px;margin-bottom:8px}
+.sub{color:#929bb8;font-size:14px;margin-bottom:25px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:17px}
+.card{background:linear-gradient(145deg,#151d38,#101528);border:1px solid #293351;border-radius:14px;padding:22px;transition:.2s}
+.card:hover{transform:translateY(-4px);border-color:#7865f4}
+.card .emoji{font-size:30px}
+.card h3{margin:14px 0 8px;font-size:17px}
+.card p{color:#a6afc9;font-size:13px;line-height:1.6}
+.card button{margin-top:17px;background:#272653;color:#c8c1ff;border:1px solid #5147a0;padding:9px 15px;border-radius:7px;cursor:pointer}
+#toolArea{display:none;margin:25px 6%;padding:25px;background:#141a30;border:1px solid #384367;border-radius:15px}
+#toolArea h2{margin-bottom:15px}
+textarea{width:100%;min-height:150px;background:#080e20;color:white;border:1px solid #3a4568;border-radius:9px;padding:14px;font-size:15px;resize:vertical}
+.tools-actions{display:flex;flex-wrap:wrap;gap:10px;margin:15px 0}
+.tools-actions button{background:#6554dc;color:white;border:0;padding:11px 15px;border-radius:7px;cursor:pointer}
+#stats{color:#9eb8ff;margin:10px 0;font-size:14px}
+footer{text-align:center;padding:35px 15px;color:#858da7;border-top:1px solid #252b45;margin-top:40px;font-size:13px}
+.empty{text-align:center;color:#aab2cb;padding:30px;display:none}
+@media(max-width:600px){
+ header{padding:17px 5%}
+ nav a{margin-left:9px;font-size:12px}
+ .logo{font-size:18px}
+ .hero{padding:55px 15px 40px}
+ .hero h1{font-size:32px}
+ .section{padding:28px 5%}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .card{padding:15px}
+ .card h3{font-size:15px}
+ .card p{font-size:12px}
+ #toolArea{margin:20px 5%;padding:17px}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="logo">Creator <span>AI Studio</span></div>
+ <nav>
+  <a href="#home">Home</a>
+  <a href="#tools">Tools</a>
+ </nav>
+</header>
+
+<section class="hero" id="home">
+ <div class="tag">WELCOME TO CREATOR AI STUDIO</div>
+ <h1>All Your Tools.<br><span>One Smart Platform.</span></h1>
+ <p>Free Online Tools for Creators, Students and Everyone.</p>
+ <div class="search">
+  <input id="searchInput" placeholder="Search your favourite tools..." oninput="searchTools()">
+  <button onclick="searchTools()">Search</button>
+ </div>
+ <p>Fast • Simple • Mobile Friendly</p>
+</section>
+
+<section class="section" id="tools">
+ <h2>Explore Our Tools</h2>
+ <p class="sub">Choose a category to explore useful online tools.</p>
+ <div class="grid" id="categoryGrid"></div>
+</section>
+
+<section id="toolArea">
+ <button class="btn" onclick="closeTool()">← Back to Tools</button>
+ <h2 id="toolTitle" style="margin-top:20px">Text Tools</h2>
+ <p class="sub" id="toolDescription">Free text utilities.</p>
+ <textarea id="textInput" placeholder="Type or paste your text here..." oninput="updateStats()"></textarea>
+ <div id="stats"></div>
+ <div class="tools-actions" id="toolButtons"></div>
+ <p id="toolMessage" style="color:#9bafff"></p>
+</section>
+
+<footer>
+ <h3 style="color:#a99aff;margin-bottom:10px">Creator AI Studio</h3>
+ <p>Free All-in-One AI Tools & Daily Useful Tools Platform.</p>
+ <p style="margin-top:12px">© 2026 Creator AI Studio. All Rights Reserved.</p>
+</footer>
+
+<script>
+const categories=[
+ {name:"AI Writing Tools",icon:"✍️",desc:"Writing, captions, bios and content creation.",tools:["AI Article Writer","Caption Generator","Bio Generator"]},
+ {name:"AI Image Tools",icon:"🎨",desc:"Image generation and image editing tools.",tools:["AI Image Generator","Background Remover"]},
+ {name:"AI Video Tools",icon:"🎬",desc:"Video scripts, ideas and content planning.",tools:["Video Script Generator","Video Ideas"]},
+ {name:"AI Voice Tools",icon:"🎙️",desc:"Voice and text-to-speech tools.",tools:["Text to Speech","Voice Tools"]},
+ {name:"YouTube Tools",icon:"▶️",desc:"Useful tools for YouTube creators.",tools:["Title Generator","Tag Generator","Description Helper"]},
+ {name:"Student Tools",icon:"🎓",desc:"Study and learning utilities.",tools:["Study Notes","Quiz Planner"]},
+ {name:"PDF Tools",icon:"📄",desc:"PDF document utilities.",tools:["PDF Tools"]},
+ {name:"Daily Useful Tools",icon:"🛠️",desc:"Free everyday productivity tools.",tools:["Word Counter","Text Case Converter","Remove Extra Spaces","Reverse Text"]}
+];
+
+const grid=document.getElementById("categoryGrid");
+
+function renderCategories(list){
+ grid.innerHTML="";
+ list.forEach(c=>{
+  const card=document.createElement("div");
+  card.className="card";
+  card.innerHTML=`<div class="emoji">${c.icon}</div>
+  <h3>${c.name}</h3><p>${c.desc}</p>
+  <button>Explore Tools →</button>`;
+  card.querySelector("button").onclick=()=>openCategory(c);
+  grid.appendChild(card);
+ });
+ document.getElementById("emptyResult").style.display=list.length?"none":"block";
+}
+
+function searchTools(){
+ const q=document.getElementById("searchInput").value.toLowerCase();
+ renderCategories(categories.filter(c=>
+  (c.name+" "+c.desc+" "+c.tools.join(" ")).toLowerCase().includes(q)
+ ));
+}
+
+function openCategory(c){
+ const area=document.getElementById("toolArea");
+ area.style.display="block";
+ document.getElementById("toolTitle").textContent=c.name;
+ document.getElementById("toolDescription").textContent=c.desc;
+ document.getElementById("textInput").value="";
+ document.getElementById("toolMessage").textContent="";
+ const buttons=document.getElementById("toolButtons");
+ buttons.innerHTML="";
+ 
+ if(c.name==="Daily Useful Tools"){
+  addButton("Word Counter",wordCount);
+  addButton("UPPERCASE",()=>transform("upper"));
+  addButton("lowercase",()=>transform("lower"));
+  addButton("Title Case",()=>transform("title"));
+  addButton("Remove Extra Spaces",cleanSpaces);
+  addButton("Reverse Text",reverseText);
+  addButton("Copy Text",copyText);
+ }else{
+  c.tools.forEach(t=>{
+   addButton(t,()=>{
+    document.getElementById("toolMessage").textContent=
+    "This feature requires an actual AI service or suitable integration. It is not activated yet.";
+   });
+  });
+ }
+ area.scrollIntoView({behavior:"smooth"});
+ updateStats();
+}
+
+function addButton(label,fn){
+ const b=document.createElement("button");
+ b.textContent=label;
+ b.onclick=fn;
+ document.getElementById("toolButtons").appendChild(b);
+}
+
+function updateStats(){
+ const text=document.getElementById("textInput").value;
+ const words=text.trim()?text.trim().split(/\s+/).length:0;
+ document.getElementById("stats").textContent=
+ "Words: "+words+" | Characters: "+text.length;
+}
+
+function wordCount(){
+ updateStats();
+ document.getElementById("toolMessage").textContent="Word count updated.";
+}
+
+function transform(type){
+ const input=document.getElementById("textInput");
+ const t=input.value;
+ if(type==="upper")input.value=t.toUpperCase();
+ if(type==="lower")input.value=t.toLowerCase();
+ if(type==="title")input.value=t.toLowerCase().replace(/\b\w/g,x=>x.toUpperCase());
+ updateStats();
+}
+
+function cleanSpaces(){
+ const input=document.getElementById("textInput");
+ input.value=input.value.trim().replace(/\s+/g," ");
+ updateStats();
+ document.getElementById("toolMessage").textContent="Extra spaces removed.";
+}
+
+function reverseText(){
+ const input=document.getElementById("textInput");
+ input.value=Array.from(input.value).reverse().join("");
+ updateStats();
+}
+
+async function copyText(){
+ const input=document.getElementById("textInput");
+ try{
+  await navigator.clipboard.writeText(input.value);
+  document.getElementById("toolMessage").textContent="Text copied successfully!";
+ }catch(e){
+  input.select();
+  document.execCommand("copy");
+  document.getElementById("toolMessage").textContent="Copy attempted.";
+ }
+}
+
+function closeTool(){
+ document.getElementById("toolArea").style.display="none";
+ document.getElementById("tools").scrollIntoView({behavior:"smooth"});
+}
+
+const empty=document.createElement("div");
+empty.id="emptyResult";
+empty.className="empty";
+empty.textContent="No matching categories found.";
+grid.after(empty);
+renderCategories(categories);
+</script>
+</body>
+</html>
